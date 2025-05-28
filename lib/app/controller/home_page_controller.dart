@@ -25,7 +25,7 @@ class HomePageController extends ChangeNotifier {
   final _apiService = ApiService();
   SocketConnectService? qrMarkingConnectService;
 
-  late final CommandApi _commandApi;
+  final CommandApi _commandApi;
 
   final List<TabItemController> tabControllers = [];
 
@@ -35,7 +35,7 @@ class HomePageController extends ChangeNotifier {
   HomePageController({
     required this.printerIpController,
     required this.printerPortController,
-  });
+  }) : _commandApi = CommandApi();
 
   /// QR 코드 요청 및 저장
   Future<void> fetchAndSaveQrCodes(int count, int selectedTabIndex) async {
@@ -69,18 +69,6 @@ class HomePageController extends ChangeNotifier {
       if (service == null || !tabController.isPrinterConnected) {
         throw StateError('Printer not connected');
       }
-
-      // QR코드별로 0x1D 명령어 전송
-      // for (final qr in savedCodes) {
-      //   await _commandApi.downloadRemoteFieldData(
-      //     service,
-      //     fields: [
-      //       {'fieldId': 1, 'message': qr.qrcode},
-      //       {'fieldId': 2, 'message': qr.number},
-      //     ],
-      //   );
-      //   await Future.delayed(const Duration(milliseconds: 700));
-      // }
     } catch (e) {
       debugPrint('Error sending QR codes to printer: $e');
       Logger().e(e);
@@ -146,6 +134,102 @@ class HomePageController extends ChangeNotifier {
 
     try {
       await _commandApi.stopPrint(service);
+    } catch (e) {
+      debugPrint('Failed to stop printer: $e');
+      Logger().e(e);
+      rethrow;
+    }
+  }
+
+  /// 프린터 시작 설정
+  Future<void> getPrintList(int tabIndex) async {
+    if (!_isValidTabIndex(tabIndex)) {
+      throw ArgumentError('Invalid tab index: $tabIndex');
+    }
+    //상태 조회 결과값 추가
+    // await requestStatus(tabIndex);
+
+    final tabController = tabControllers[tabIndex];
+    final service = tabController.socketConnectService;
+
+    if (service == null) {
+      throw StateError('Printer not connected');
+    }
+
+    try {
+      await _commandApi.getPrintList(service);
+    } catch (e) {
+      debugPrint('Failed to stop printer: $e');
+      Logger().e(e);
+      rethrow;
+    }
+  }
+
+  /// 프린터 시작 설정
+  Future<void> clearCache(int tabIndex) async {
+    if (!_isValidTabIndex(tabIndex)) {
+      throw ArgumentError('Invalid tab index: $tabIndex');
+    }
+    //상태 조회 결과값 추가
+    // await requestStatus(tabIndex);
+
+    final tabController = tabControllers[tabIndex];
+    final service = tabController.socketConnectService;
+
+    if (service == null) {
+      throw StateError('Printer not connected');
+    }
+
+    try {
+      await _commandApi.clearCache(service);
+    } catch (e) {
+      debugPrint('Failed to stop printer: $e');
+      Logger().e(e);
+      rethrow;
+    }
+  }
+
+  /// 프린터 시작 설정
+  Future<void> getPrinterStatus(int tabIndex) async {
+    if (!_isValidTabIndex(tabIndex)) {
+      throw ArgumentError('Invalid tab index: $tabIndex');
+    }
+    //상태 조회 결과값 추가
+    // await requestStatus(tabIndex);
+
+    final tabController = tabControllers[tabIndex];
+    final service = tabController.socketConnectService;
+
+    if (service == null) {
+      throw StateError('Printer not connected');
+    }
+
+    try {
+      await _commandApi.getPrinterStatus(service);
+    } catch (e) {
+      debugPrint('Failed to stop printer: $e');
+      Logger().e(e);
+      rethrow;
+    }
+  }
+
+  /// 프린터 시작 설정
+  Future<void> clearErrorState(int tabIndex) async {
+    if (!_isValidTabIndex(tabIndex)) {
+      throw ArgumentError('Invalid tab index: $tabIndex');
+    }
+    //상태 조회 결과값 추가
+    // await requestStatus(tabIndex);
+
+    final tabController = tabControllers[tabIndex];
+    final service = tabController.socketConnectService;
+
+    if (service == null) {
+      throw StateError('Printer not connected');
+    }
+
+    try {
+      await _commandApi.clearErrorState(service);
     } catch (e) {
       debugPrint('Failed to stop printer: $e');
       Logger().e(e);

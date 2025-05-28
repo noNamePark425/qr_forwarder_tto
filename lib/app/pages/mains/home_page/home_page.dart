@@ -441,28 +441,46 @@ class _TabItemViewState extends State<TabItemView> {
             ],
           ),
           const SizedBox(height: 16),
-          // Row(
-          //   children: [
-          //     Expanded(
-          //       child: CommonButtonWidget(
-          //         title: 'lock !',
-          //         onTap: () {
-          //           widget.controller.homePageController.lockingPrint(widget.tabIndex);
-          //         },
-          //       ),
-          //     ),
-          //     const SizedBox(width: 8),
-          //     Expanded(
-          //       child: CommonButtonWidget(
-          //         title: 'unlock !',
-          //         onTap: () {
-          //           widget.controller.homePageController.unlockingPrint(widget.tabIndex);
-          //         },
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: CommonButtonWidget(
+                  title: 'get print list !',
+                  onTap: () {
+                    widget.controller.homePageController.getPrintList(widget.tabIndex);
+                  },
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: CommonButtonWidget(
+                  title: 'clear cache !',
+                  onTap: () {
+                    widget.controller.homePageController.clearCache(widget.tabIndex);
+                  },
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: CommonButtonWidget(
+                  title: 'get print status !',
+                  onTap: () {
+                    widget.controller.homePageController.getPrinterStatus(widget.tabIndex);
+                  },
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: CommonButtonWidget(
+                  title: 'clear error state !',
+                  onTap: () {
+                    widget.controller.homePageController.clearErrorState(widget.tabIndex);
+                  },
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
           Row(
             children: [
               Expanded(

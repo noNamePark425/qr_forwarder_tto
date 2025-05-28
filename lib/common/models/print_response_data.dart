@@ -1,34 +1,44 @@
+import 'dart:typed_data';
+
 class PrintResponseData {
-  final String status;
-  final String fun;
-  final String timeStamp;
-  final String sign;
-  final String dataType;
-  final Map<String, dynamic> extra;
+  String? fun;
+  String? status;
+  String? timeStamp;
+  String? sign;
+  Map<String, dynamic> extra;
+
+  /// ✅ 응답 원본 바이트
+  Uint8List? rawBytes;
 
   PrintResponseData({
-    required this.status,
-    required this.fun,
-    required this.timeStamp,
-    required this.sign,
-    required this.dataType,
+    this.fun,
+    this.status,
+    this.timeStamp,
+    this.sign,
     this.extra = const {},
+    this.rawBytes,
   });
 
-  factory PrintResponseData.fromJson(Map<String, dynamic> json) {
-    final extra = Map<String, dynamic>.from(json)
-      ..remove('Status')
-      ..remove('Fun')
-      ..remove('TimeStamp')
-      ..remove('Sign')
-      ..remove('DataType');
+  factory PrintResponseData.fromJson(Map<String, dynamic> json, {Uint8List? rawBytes}) {
     return PrintResponseData(
-      status: json['Status'] ?? '',
-      fun: json['Fun'] ?? '',
-      timeStamp: json['TimeStamp'] ?? '',
-      sign: json['Sign'] ?? '',
-      dataType: json['DataType'] ?? '',
-      extra: extra,
+      fun: json['Fun'],
+      status: json['Status'],
+      timeStamp: json['TimeStamp'],
+      sign: json['Sign'],
+      extra: Map.from(json)
+        ..removeWhere((k, _) => ['Fun', 'Status', 'TimeStamp', 'Sign'].contains(k)),
+      rawBytes: rawBytes,
     );
   }
+
+  // factory PrintResponseData.fromJson(Map<String, dynamic> json) {
+  //   return PrintResponseData(
+  //     fun: json['Fun'],
+  //     status: json['Status'],
+  //     timeStamp: json['TimeStamp'],
+  //     sign: json['Sign'],
+  //     extra: Map.from(json)
+  //       ..removeWhere((k, _) => ['Fun', 'Status', 'TimeStamp', 'Sign'].contains(k)),
+  //   );
+  // }
 }
