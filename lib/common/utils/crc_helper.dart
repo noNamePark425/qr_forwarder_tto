@@ -519,8 +519,8 @@ class CrcHelper {
   ];
 
   /// C#의 crc(byte[] data)와 동일
-  Uint8List crc(Uint8List data) {
-    return crc2byte(calcCrc16(data));
+  String crc(Uint8List data) {
+    return getCrc(calcCrc16(data));
   }
 
   /// C#의 crc_2byte(int crc)와 동일
@@ -556,5 +556,12 @@ class CrcHelper {
     final startTime = DateTime(1970, 1, 1).toLocal();
     final timeStamp = now.difference(startTime).inMilliseconds;
     return timeStamp.toString().substring(0, 10);
+  }
+
+  String getCrc(int res) {
+    String format = res.toRadixString(16).padLeft(4, '0');
+    String substring = format.substring(0, 2);
+    String substring1 = format.substring(2, 4);
+    return '$substring $substring1 ';
   }
 }

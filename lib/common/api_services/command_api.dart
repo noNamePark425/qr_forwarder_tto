@@ -113,7 +113,7 @@ class CommandApi {
   Future<void> _sendCommand(SocketConnectService service, String fun) async {
     final now = DateTime.now();
     final timeStamp = CrcHelper.getTimeStamp(now);
-    final sign = EncryptionHelper.md5Encrypt(timeStamp);
+    final sign = EncryptionHelper.md5Encrypt(timeStamp.toString());
 
     final printData = PrintData(
       fun: fun,

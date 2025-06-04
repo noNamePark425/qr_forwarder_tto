@@ -199,16 +199,16 @@ class SocketConnectService {
       final totalLength = buffer.length + 2 + 4 + 4 + 2 + 2; // 전체 패킷 길이
       final lengthBytes = EncryptionHelper.intToBytes(totalLength); // Big-endian
 
-      // ✅ CRC 대상은 JSON payload만!
-      final check = _crcHelper.crc(Uint8List.fromList(buffer));
+      // CRC 문자열을 바이트 배열로 변환
+      final checkStr = _crcHelper.crc(Uint8List.fromList(buffer));
+      final checkBytes = checkStr.split(' ').map((hex) => int.parse(hex, radix: 16)).toList();
 
-      // ✅ 최종 패킷 조립
       final packet = <int>[
         ...head,
         ...lengthBytes,
         ...reserve,
         ...buffer,
-        ...check,
+        ...checkBytes,
         0xED,
         0xAA,
       ];
